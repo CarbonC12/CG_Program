@@ -218,27 +218,29 @@ namespace CG_Program
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    S_x= Convert.ToInt32(IN__S_X.Text);
-            //    S_y = Convert.ToInt32(IN_S_Y.Text);
-            //    E_x = Convert.ToInt32(IN_E_X.Text);
-            //    E_y = Convert.ToInt32(IN_E_Y.Text);
-            //}
-            //catch(Exception ec)
-            //    {
-            //    MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            //if(S_x>29||E_x>29||S_y > 29 || E_y > 29)
-            //{
-            //    MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            //else
-            //{
-
-            //    MyDraw(1, 0);
-            //}
-            MyDraw(29,29);
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            graphics_Line2.Clear(Color.White);
+            GroupBox2_Paint(null, null);
+            try
+            {
+                S_x = Convert.ToInt32(IN__S_X.Text);
+                S_y = Convert.ToInt32(IN_S_Y.Text);
+                E_x = Convert.ToInt32(IN_E_X.Text);
+                E_y = Convert.ToInt32(IN_E_Y.Text);
+            }
+            catch (Exception ec)
+            {
+                MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (S_x > 29 || E_x > 29 || S_y > 29 || E_y > 29)
+            {
+                MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                New_Bresenham();
+            }
 
 
         }
@@ -246,6 +248,111 @@ namespace CG_Program
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void New_Bresenham()
+        {
+            
+            int tmp;
+            if (E_x <= S_x)
+            {
+                tmp = E_x;
+                E_x = S_x;
+                S_x = tmp;
+
+                tmp = E_y;
+                E_y = S_y;
+                S_y = tmp;
+            }
+            int det_x, det_y, line_e, x, y;
+            det_x = E_x - S_x;
+            det_y = E_y - S_y;
+            line_e = 0 - det_x;
+            x = S_x;
+            y = S_y;
+            if (det_y < 0)
+            {
+                S_y = 29 - S_y;
+                E_y = 29 - E_y;
+                x = S_x;
+                y = S_y;
+                //MessageBox.Show("1:" + S_x + "   2:" + S_y + "   3:" + E_x + "   4:" + E_y);
+                det_y = 0 - det_y;
+                if (det_x >= det_y)
+                {
+                    for (int i = 0; i <= det_x; i++)
+                    {
+                        
+                        MyDraw(x, 29-y);
+                        
+                        x++;
+                        line_e = line_e + 2 * det_y;
+                        if (line_e >= 0)
+                        {
+                            y++;
+                            line_e = line_e - 2 * det_x;
+                            //MessageBox.Show("e" + line_e);
+                        }
+
+                    }
+                }
+                else
+                {
+                    line_e = 0 - det_y;
+                    for (int i = 0; i <= det_y; i++)
+                    {
+                        MyDraw(x, 29-y);
+                        //MessageBox.Show("e" + line_e); 
+                        y++;
+                        line_e = line_e + 2 * det_x;
+                        if (line_e >= 0)
+                        {
+                            x++;
+                            line_e = line_e - 2 * det_y;
+                            //MessageBox.Show("e" + line_e);
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                if (det_x >= det_y)
+                {
+                    for (int i = 0; i <= det_x; i++)
+                    {
+                        MyDraw(x, y);
+                        //MessageBox.Show("e" + line_e); 
+                        x++;
+                        line_e = line_e + 2 * det_y;
+                        if (line_e >= 0)
+                        {
+                            y++;
+                            line_e = line_e - 2 * det_x;
+                            //MessageBox.Show("e" + line_e);
+                        }
+
+                    }
+                }
+                else
+                {
+                    line_e = 0 - det_y;
+                    for (int i = 0; i <= det_y; i++)
+                    {
+                        MyDraw(x, y);
+                        //MessageBox.Show("e" + line_e); 
+                        y++;
+                        line_e = line_e + 2 * det_x;
+                        if (line_e >= 0)
+                        {
+                            x++;
+                            line_e = line_e - 2 * det_y;
+                            //MessageBox.Show("e" + line_e);
+                        }
+
+                    }
+                }
+            }
         }
     }
 }
