@@ -15,6 +15,7 @@ namespace CG_Program
         public CG_Win()
         {
             InitializeComponent();
+            LineCheckList.SetItemChecked(0, true);
             S_x = 0;
             S_y = 0;
             E_x = 0;
@@ -239,7 +240,12 @@ namespace CG_Program
             }
             else
             {
-                New_Bresenham();
+                if (LineCheckList.GetItemChecked(0))
+                    DDA();
+                else if (LineCheckList.GetItemChecked(1))
+                    Bresenham();
+                else
+                    New_Bresenham();
             }
 
 
@@ -250,6 +256,218 @@ namespace CG_Program
 
         }
 
+        private void DDA()
+        {
+            int tmp;
+            if (E_x <= S_x)
+            {
+                tmp = E_x;
+                E_x = S_x;
+                S_x = tmp;
+
+                tmp = E_y;
+                E_y = S_y;
+                S_y = tmp;
+            }
+            float det_x, det_y; 
+            det_x = E_x - S_x;
+            det_y = E_y - S_y;
+            if(det_y<0)
+            {
+                int x1;
+                float y1;
+                float k;
+                S_y = 29 - S_y;
+                E_y = 29 - E_y;
+                x1 = S_x;
+                y1 = S_y;
+                det_y = 0 - det_y;
+                if (det_x >= det_y)
+                {
+                    k = det_y / det_x;
+                    for (x1 = S_x; x1 <= E_x; x1++)
+                    {
+                        float tmp2;
+                        tmp2 = y1 + (float)0.5;
+                        MessageBox.Show("X=" + x1 + "   Y=" + y1 + "\n" + "K=" + k);
+                        MyDraw(x1, 29-(int)tmp2);
+                        y1 = y1 + k;
+                    }
+                }
+                else
+                {
+                    float x2;
+                    int y2;
+                    float k2;
+                    S_y = 29 - S_y;
+                    E_y = 29 - E_y;
+                    x2 = S_x;
+                    y2 = S_y;
+                    k2 = det_x / det_y;
+                    for (y2 = 29-S_y; y2 <= 29-E_y; y2++)
+                    {
+                        float tmp3;
+                        tmp3 = x2 + (float)0.5;
+                        MessageBox.Show("X=" + x2 + "   Y=" + y2 + "\n" + "K=" + k2);
+                        MyDraw((int)tmp3,29-y2);
+                        x2 = x2 + k2;
+                    }
+                }
+            }
+            else
+            {
+                int x3;
+                float y3;
+                float k3;
+                x3 = S_x;
+                y3 = S_y;
+                if (det_x >= det_y)
+                {
+                    k3 = det_y / det_x;
+                    for (x3 = S_x; x3 <= E_x; x3++)
+                    {
+                        float tmp2;
+                        tmp2 = y3 + (float)0.5;
+                        MessageBox.Show("X=" + x3 + "   Y=" + y3 + "\n" + "K=" + k3);
+                        MyDraw(x3,(int)tmp2);
+                        y3 = y3 + k3;
+                    }
+                }
+                else
+                {
+                    float x4;
+                    int y4;
+                    float k4;
+                    x4 = S_x;
+                    y4 = S_y;
+                    k4 = det_x / det_y;
+                    for (y4 =S_y; y4 <=E_y; y4++)
+                    {
+                        float tmp3;
+                        tmp3 = x4 + (float)0.5;
+                        MessageBox.Show("X=" + x4 + "   Y=" + y4 + "\n" + "K=" + k4);
+                        MyDraw((int)tmp3,y4);
+                        x4 = x4 + k4;
+                    }
+                }
+            }
+
+            
+
+        }
+
+        private void Bresenham()
+        {
+            int tmp;
+            if (E_x <= S_x)
+            {
+                tmp = E_x;
+                E_x = S_x;
+                S_x = tmp;
+
+                tmp = E_y;
+                E_y = S_y;
+                S_y = tmp;
+            }
+
+            float det_x, det_y;
+            det_x = E_x - S_x;
+            det_y = E_y - S_y;
+            if (det_y < 0)
+            {
+                det_y = 0 - det_y;
+                if (det_x >= det_y)
+                {
+                    float k, e;
+                    int x, y;
+                    k = det_y / det_x;
+                    e = -0.5f;
+                    x = S_x;
+                    y = 29-S_y;
+                    for (int i = 0; i <= det_x; i++)
+                    {
+                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k+ "\n"+"E=" +e);
+                        MyDraw(x, 29-y);
+                        x = x + 1;
+                        e = e + k;
+                        if (e >= 0)
+                        {
+                            y++;
+                            e = e - 1;
+                        }
+                    }
+
+                }
+                else
+                {
+                    float k, e;
+                    int x, y;
+                    k = det_x / det_y;
+                    e = -0.5f;
+                    x = S_x;
+                    y = 29-S_y;
+                    for (int i = 0; i <= det_y; i++)
+                    {
+                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k + "\n" + "E=" + e);
+                        MyDraw(x, 29-y);
+                        y = y + 1;
+                        e = e + k;
+                        if (e >= 0)
+                        {
+                            x++;
+                            e = e - 1;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (det_x >= det_y)
+                {
+                    float k, e;
+                    int x, y;
+                    k = det_y / det_x;
+                    e = -0.5f;
+                    x = S_x;
+                    y = S_y;
+                    for(int i=0;i<=det_x;i++)
+                    {
+                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k + "\n" + "E=" + e);
+                        MyDraw(x, y);
+                        x = x + 1;
+                        e = e + k;
+                        if(e>=0)
+                        {
+                            y++;
+                            e = e - 1;
+                        }
+                    }
+
+                }
+                else
+                {
+                    float k, e;
+                    int x, y;
+                    k = det_x / det_y;
+                    e = -0.5f;
+                    x = S_x;
+                    y = S_y;
+                    for (int i = 0; i <= det_y; i++)
+                    {
+                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k + "\n" + "E=" + e);
+                        MyDraw(x, y);
+                        y = y + 1;
+                        e = e + k;
+                        if (e >= 0)
+                        {
+                            x++;
+                            e = e - 1;
+                        }
+                    }
+                }
+            }
+
+        }
         private void New_Bresenham()
         {
             
@@ -276,13 +494,12 @@ namespace CG_Program
                 E_y = 29 - E_y;
                 x = S_x;
                 y = S_y;
-                //MessageBox.Show("1:" + S_x + "   2:" + S_y + "   3:" + E_x + "   4:" + E_y);
                 det_y = 0 - det_y;
                 if (det_x >= det_y)
                 {
                     for (int i = 0; i <= det_x; i++)
                     {
-                        
+                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, 29-y);
                         
                         x++;
@@ -301,15 +518,14 @@ namespace CG_Program
                     line_e = 0 - det_y;
                     for (int i = 0; i <= det_y; i++)
                     {
+                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, 29-y);
-                        //MessageBox.Show("e" + line_e); 
                         y++;
                         line_e = line_e + 2 * det_x;
                         if (line_e >= 0)
                         {
                             x++;
                             line_e = line_e - 2 * det_y;
-                            //MessageBox.Show("e" + line_e);
                         }
 
                     }
@@ -321,15 +537,14 @@ namespace CG_Program
                 {
                     for (int i = 0; i <= det_x; i++)
                     {
+                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, y);
-                        //MessageBox.Show("e" + line_e); 
                         x++;
                         line_e = line_e + 2 * det_y;
                         if (line_e >= 0)
                         {
                             y++;
                             line_e = line_e - 2 * det_x;
-                            //MessageBox.Show("e" + line_e);
                         }
 
                     }
@@ -339,19 +554,27 @@ namespace CG_Program
                     line_e = 0 - det_y;
                     for (int i = 0; i <= det_y; i++)
                     {
+                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, y);
-                        //MessageBox.Show("e" + line_e); 
                         y++;
                         line_e = line_e + 2 * det_x;
                         if (line_e >= 0)
                         {
                             x++;
                             line_e = line_e - 2 * det_y;
-                            //MessageBox.Show("e" + line_e);
                         }
 
                     }
                 }
+            }
+        }
+
+        private void LineCheckList_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            for(int i=0;i<LineCheckList.Items.Count;i++)
+            {
+                if (i != e.Index)
+                    LineCheckList.SetItemChecked(i, false);
             }
         }
     }

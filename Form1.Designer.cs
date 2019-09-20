@@ -13,7 +13,7 @@
         /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (components != null) )
             {
                 components.Dispose();
             }
@@ -45,6 +45,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.LineCheckList = new System.Windows.Forms.CheckedListBox();
             this.Tab_Draw.SuspendLayout();
             this.Tab_Line.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -121,6 +122,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.LineCheckList);
             this.tabPage2.Controls.Add(this.IN_S_Y);
             this.tabPage2.Controls.Add(this.IN_E_X);
             this.tabPage2.Controls.Add(this.IN_E_Y);
@@ -146,28 +148,28 @@
             this.IN_S_Y.Location = new System.Drawing.Point(63, 64);
             this.IN_S_Y.Name = "IN_S_Y";
             this.IN_S_Y.Size = new System.Drawing.Size(100, 23);
-            this.IN_S_Y.TabIndex = 9;
+            this.IN_S_Y.TabIndex = 2;
             // 
             // IN_E_X
             // 
             this.IN_E_X.Location = new System.Drawing.Point(48, 99);
             this.IN_E_X.Name = "IN_E_X";
             this.IN_E_X.Size = new System.Drawing.Size(100, 23);
-            this.IN_E_X.TabIndex = 8;
+            this.IN_E_X.TabIndex = 3;
             // 
             // IN_E_Y
             // 
             this.IN_E_Y.Location = new System.Drawing.Point(48, 128);
             this.IN_E_Y.Name = "IN_E_Y";
             this.IN_E_Y.Size = new System.Drawing.Size(100, 23);
-            this.IN_E_Y.TabIndex = 7;
+            this.IN_E_Y.TabIndex = 4;
             // 
             // IN__S_X
             // 
             this.IN__S_X.Location = new System.Drawing.Point(63, 35);
             this.IN__S_X.Name = "IN__S_X";
             this.IN__S_X.Size = new System.Drawing.Size(100, 23);
-            this.IN__S_X.TabIndex = 6;
+            this.IN__S_X.TabIndex = 1;
             // 
             // label5
             // 
@@ -207,10 +209,10 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(63, 213);
+            this.button3.Location = new System.Drawing.Point(63, 258);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 1;
+            this.button3.TabIndex = 5;
             this.button3.Text = "绘制";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.Button3_Click);
@@ -224,6 +226,21 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox2_Paint);
             this.groupBox2.Enter += new System.EventHandler(this.GroupBox2_Enter);
+            // 
+            // LineCheckList
+            // 
+            this.LineCheckList.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.LineCheckList.CheckOnClick = true;
+            this.LineCheckList.FormattingEnabled = true;
+            this.LineCheckList.Items.AddRange(new object[] {
+            "DDA",
+            "Bresenham",
+            "IntegerBresenham"});
+            this.LineCheckList.Location = new System.Drawing.Point(23, 166);
+            this.LineCheckList.Name = "LineCheckList";
+            this.LineCheckList.Size = new System.Drawing.Size(125, 76);
+            this.LineCheckList.TabIndex = 10;
+            this.LineCheckList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.LineCheckList_ItemCheck);
             // 
             // CG_Win
             // 
@@ -266,6 +283,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckedListBox LineCheckList;
     }
 }
 
