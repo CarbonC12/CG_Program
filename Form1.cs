@@ -22,163 +22,19 @@ namespace CG_Program
             E_y = 0;
         }
 
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("按下鼠标左键即确定起点，拖动至终点然后松开鼠标左键即可确定终点", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
 
-        private void GroupBox1_Enter(object sender, EventArgs e)
-        {
-            //NULL
-        }
-
-        private void GroupBox1_MouseHover(object sender, EventArgs e)
-        {
-            
-        }
 
         private void CG_Win_Load(object sender, EventArgs e)
         {
-            groupBox1.MouseDown += new MouseEventHandler(groupBox1_MouseDown);
-            groupBox1.MouseUp += new MouseEventHandler(groupBox1_MouseUp);
+         //
         }
 
-        void groupBox1_MouseDown(object sender,MouseEventArgs e)
-        {
-            S_x = e.X;
-            if (e.Y <= 10)
-                S_y = this.groupBox1.Height -10;
-            else
-            S_y = this.groupBox1.Height-e.Y;
-        }
-        void groupBox1_MouseUp(object sender, MouseEventArgs e)
-        {
-            E_x = e.X;
-            if(e.Y<=10)
-                E_y = this.groupBox1.Height - 10;
-            else
-            E_y = this.groupBox1.Height-e.Y;
-            //MessageBox.Show("1:" + S_x + "   2:" + S_y + "   3:" + E_x + "   4:" + E_y);
-            GroupBox1_Paint(null,null) ;
-        }
-
-        private void GroupBox1_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics graphics_Line = this.groupBox1.CreateGraphics();
-            Pen LinePen = new Pen(Color.FromArgb(174, 189, 191), 1);
-            int tmp;
-            if(E_x<=S_x)
-            {
-                tmp = E_x;
-                E_x = S_x;
-                S_x = tmp;
-
-                tmp = E_y;
-                E_y = S_y;
-                S_y = tmp;
-            }
-            int det_x, det_y,line_e,x,y;
-            det_x = E_x - S_x;
-            det_y = E_y - S_y;
-            line_e = 0-det_x;
-            x = S_x;
-            y = S_y;
-            if(det_y<0)
-            {
-                S_y = this.groupBox1.Height - S_y;
-                E_y = this.groupBox1.Height - E_y;
-                x = S_x;
-                y = S_y;
-                //MessageBox.Show("1:" + S_x + "   2:" + S_y + "   3:" + E_x + "   4:" + E_y);
-                det_y = 0 - det_y;
-                if (det_x >= det_y)
-                {
-                    for (int i = 0; i <= det_x; i++)
-                    {
-                        graphics_Line.DrawLine(LinePen, x, y, x + 1, y + 1);
-                        //MessageBox.Show("e" + line_e); 
-                        x++;
-                        line_e = line_e + 2 * det_y;
-                        if (line_e >= 0)
-                        {
-                            y++;
-                            line_e = line_e - 2 * det_x;
-                            //MessageBox.Show("e" + line_e);
-                        }
-
-                    }
-                }
-                else
-                {
-                    line_e = 0 - det_y;
-                    for (int i = 0; i <= det_y; i++)
-                    {
-                        graphics_Line.DrawLine(LinePen, x, y, x + 1, y + 1);
-                        //MessageBox.Show("e" + line_e); 
-                        y++;
-                        line_e = line_e + 2 * det_x;
-                        if (line_e >= 0)
-                        {
-                            x++;
-                            line_e = line_e - 2 * det_y;
-                            //MessageBox.Show("e" + line_e);
-                        }
-
-                    }
-                }
-            }
-            else
-            {
-                if (det_x >= det_y)
-                {
-                    for (int i = 0; i <= det_x; i++)
-                    {
-                        graphics_Line.DrawLine(LinePen, x, this.groupBox1.Height - y, x + 1, this.groupBox1.Height - y - 1);
-                        //MessageBox.Show("e" + line_e); 
-                        x++;
-                        line_e = line_e + 2 * det_y;
-                        if (line_e >= 0)
-                        {
-                            y++;
-                            line_e = line_e - 2 * det_x;
-                            //MessageBox.Show("e" + line_e);
-                        }
-
-                    }
-                }
-                else
-                {
-                    line_e = 0 - det_y;
-                    for (int i = 0; i <= det_y; i++)
-                    {
-                        graphics_Line.DrawLine(LinePen, x, this.groupBox1.Height - y, x + 1, this.groupBox1.Height - y - 1);
-                        //MessageBox.Show("e" + line_e); 
-                        y++;
-                        line_e = line_e + 2 * det_x;
-                        if (line_e >= 0)
-                        {
-                            x++;
-                            line_e = line_e - 2 * det_y;
-                            //MessageBox.Show("e" + line_e);
-                        }
-
-                    }
-                }
-            }
 
 
 
-        }
+     
 
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            Graphics graphics_Line = this.groupBox1.CreateGraphics();
-            Pen LinePen = new Pen(Color.FromArgb(255,255,255), 1);
-            for(int i=10;i<=this.groupBox1.Height;i++)
-            {
-                graphics_Line.DrawLine(LinePen, 1,i,this.groupBox1.Width,i);
-            }
-        }
+
 
         private void TabPage2_Click(object sender, EventArgs e)
         {
@@ -210,6 +66,7 @@ namespace CG_Program
             Brush b = new SolidBrush(Color.Red);//声明的画刷
             graphics_Line2.DrawEllipse(PointPen, x*10 - 3, (30-y)*10 - 3, 5, 5);
             graphics_Line2.FillEllipse(b, x*10 - 3, (30-y)*10 - 3, 5, 5);
+            System.Threading.Thread.Sleep(100);
         }
 
         private void GroupBox2_Enter(object sender, EventArgs e)
@@ -259,6 +116,7 @@ namespace CG_Program
         private void DDA()
         {
             int tmp;
+            listBox1.Items.Clear();
             if (E_x <= S_x)
             {
                 tmp = E_x;
@@ -289,7 +147,7 @@ namespace CG_Program
                     {
                         float tmp2;
                         tmp2 = y1 + (float)0.5;
-                        MessageBox.Show("X=" + x1 + "   Y=" + y1 + "\n" + "K=" + k);
+                        ShowMessage("X=" + x1 + "   Y=" + y1 + "  K=" + k);
                         MyDraw(x1, 29-(int)tmp2);
                         y1 = y1 + k;
                     }
@@ -308,7 +166,7 @@ namespace CG_Program
                     {
                         float tmp3;
                         tmp3 = x2 + (float)0.5;
-                        MessageBox.Show("X=" + x2 + "   Y=" + y2 + "\n" + "K=" + k2);
+                        ShowMessage("X=" + x2 + "   Y=" + y2 + "  K=" + k2);
                         MyDraw((int)tmp3,29-y2);
                         x2 = x2 + k2;
                     }
@@ -328,7 +186,7 @@ namespace CG_Program
                     {
                         float tmp2;
                         tmp2 = y3 + (float)0.5;
-                        MessageBox.Show("X=" + x3 + "   Y=" + y3 + "\n" + "K=" + k3);
+                        ShowMessage("X=" + x3 + "   Y=" + y3 + "  K=" + k3);
                         MyDraw(x3,(int)tmp2);
                         y3 = y3 + k3;
                     }
@@ -345,7 +203,7 @@ namespace CG_Program
                     {
                         float tmp3;
                         tmp3 = x4 + (float)0.5;
-                        MessageBox.Show("X=" + x4 + "   Y=" + y4 + "\n" + "K=" + k4);
+                        ShowMessage("X=" + x4 + "   Y=" + y4 +"  K=" + k4);
                         MyDraw((int)tmp3,y4);
                         x4 = x4 + k4;
                     }
@@ -359,6 +217,7 @@ namespace CG_Program
         private void Bresenham()
         {
             int tmp;
+            listBox1.Items.Clear();
             if (E_x <= S_x)
             {
                 tmp = E_x;
@@ -386,7 +245,7 @@ namespace CG_Program
                     y = 29-S_y;
                     for (int i = 0; i <= det_x; i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k+ "\n"+"E=" +e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
                         MyDraw(x, 29-y);
                         x = x + 1;
                         e = e + k;
@@ -408,7 +267,7 @@ namespace CG_Program
                     y = 29-S_y;
                     for (int i = 0; i <= det_y; i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k + "\n" + "E=" + e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
                         MyDraw(x, 29-y);
                         y = y + 1;
                         e = e + k;
@@ -432,7 +291,7 @@ namespace CG_Program
                     y = S_y;
                     for(int i=0;i<=det_x;i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k + "\n" + "E=" + e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
                         MyDraw(x, y);
                         x = x + 1;
                         e = e + k;
@@ -454,7 +313,7 @@ namespace CG_Program
                     y = S_y;
                     for (int i = 0; i <= det_y; i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "\n" + "K=" + k + "\n" + "E=" + e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k  + "   E=" + e);
                         MyDraw(x, y);
                         y = y + 1;
                         e = e + k;
@@ -472,6 +331,7 @@ namespace CG_Program
         {
             
             int tmp;
+            listBox1.Items.Clear();
             if (E_x <= S_x)
             {
                 tmp = E_x;
@@ -499,7 +359,7 @@ namespace CG_Program
                 {
                     for (int i = 0; i <= det_x; i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, 29-y);
                         
                         x++;
@@ -518,7 +378,7 @@ namespace CG_Program
                     line_e = 0 - det_y;
                     for (int i = 0; i <= det_y; i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, 29-y);
                         y++;
                         line_e = line_e + 2 * det_x;
@@ -537,7 +397,7 @@ namespace CG_Program
                 {
                     for (int i = 0; i <= det_x; i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, y);
                         x++;
                         line_e = line_e + 2 * det_y;
@@ -554,7 +414,7 @@ namespace CG_Program
                     line_e = 0 - det_y;
                     for (int i = 0; i <= det_y; i++)
                     {
-                        MessageBox.Show("X=" + x + "   Y=" + y + "   E=" + line_e);
+                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
                         MyDraw(x, y);
                         y++;
                         line_e = line_e + 2 * det_x;
@@ -576,6 +436,14 @@ namespace CG_Program
                 if (i != e.Index)
                     LineCheckList.SetItemChecked(i, false);
             }
+        }
+
+        private void ShowMessage(string str)
+        {
+            listBox1.Items.Insert(0,str);
+            System.Threading.Thread.Sleep(100);
+            Application.DoEvents();
+
         }
     }
 }
