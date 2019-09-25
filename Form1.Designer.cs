@@ -30,6 +30,7 @@
         {
             this.Tab_Draw = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.LineCheckList = new System.Windows.Forms.CheckedListBox();
             this.IN_S_Y = new System.Windows.Forms.TextBox();
             this.IN_E_X = new System.Windows.Forms.TextBox();
@@ -41,7 +42,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.IN_R = new System.Windows.Forms.TextBox();
+            this.IN_EL_S = new System.Windows.Forms.TextBox();
+            this.IN_EL_L = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.Tab_Draw.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
@@ -53,11 +62,20 @@
             this.Tab_Draw.Margin = new System.Windows.Forms.Padding(0);
             this.Tab_Draw.Name = "Tab_Draw";
             this.Tab_Draw.SelectedIndex = 0;
-            this.Tab_Draw.Size = new System.Drawing.Size(799, 432);
+            this.Tab_Draw.Size = new System.Drawing.Size(799, 461);
             this.Tab_Draw.TabIndex = 0;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label10);
+            this.tabPage2.Controls.Add(this.label9);
+            this.tabPage2.Controls.Add(this.label8);
+            this.tabPage2.Controls.Add(this.IN_EL_L);
+            this.tabPage2.Controls.Add(this.IN_EL_S);
+            this.tabPage2.Controls.Add(this.IN_R);
+            this.tabPage2.Controls.Add(this.label7);
+            this.tabPage2.Controls.Add(this.label6);
+            this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.listBox1);
             this.tabPage2.Controls.Add(this.LineCheckList);
             this.tabPage2.Controls.Add(this.IN_S_Y);
@@ -73,12 +91,21 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(791, 402);
+            this.tabPage2.Size = new System.Drawing.Size(791, 431);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = " ";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.TabPage2_Click);
             this.tabPage2.Paint += new System.Windows.Forms.PaintEventHandler(this.TabPage2_Paint);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 17;
+            this.listBox1.Location = new System.Drawing.Point(502, 11);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(280, 378);
+            this.listBox1.TabIndex = 11;
             // 
             // LineCheckList
             // 
@@ -88,10 +115,13 @@
             this.LineCheckList.Items.AddRange(new object[] {
             "DDA",
             "Bresenham",
-            "IntegerBresenham"});
-            this.LineCheckList.Location = new System.Drawing.Point(23, 166);
+            "IntegerBresenham",
+            "圆的中点算法",
+            "圆的Bresenham算法",
+            "椭圆绘制的中点算法"});
+            this.LineCheckList.Location = new System.Drawing.Point(13, 223);
             this.LineCheckList.Name = "LineCheckList";
-            this.LineCheckList.Size = new System.Drawing.Size(125, 76);
+            this.LineCheckList.Size = new System.Drawing.Size(140, 166);
             this.LineCheckList.TabIndex = 10;
             this.LineCheckList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.LineCheckList_ItemCheck);
             // 
@@ -99,34 +129,34 @@
             // 
             this.IN_S_Y.Location = new System.Drawing.Point(63, 64);
             this.IN_S_Y.Name = "IN_S_Y";
-            this.IN_S_Y.Size = new System.Drawing.Size(100, 23);
+            this.IN_S_Y.Size = new System.Drawing.Size(32, 23);
             this.IN_S_Y.TabIndex = 2;
             // 
             // IN_E_X
             // 
-            this.IN_E_X.Location = new System.Drawing.Point(48, 99);
+            this.IN_E_X.Location = new System.Drawing.Point(141, 35);
             this.IN_E_X.Name = "IN_E_X";
-            this.IN_E_X.Size = new System.Drawing.Size(100, 23);
+            this.IN_E_X.Size = new System.Drawing.Size(34, 23);
             this.IN_E_X.TabIndex = 3;
             // 
             // IN_E_Y
             // 
-            this.IN_E_Y.Location = new System.Drawing.Point(48, 128);
+            this.IN_E_Y.Location = new System.Drawing.Point(141, 64);
             this.IN_E_Y.Name = "IN_E_Y";
-            this.IN_E_Y.Size = new System.Drawing.Size(100, 23);
+            this.IN_E_Y.Size = new System.Drawing.Size(34, 23);
             this.IN_E_Y.TabIndex = 4;
             // 
             // IN__S_X
             // 
             this.IN__S_X.Location = new System.Drawing.Point(63, 35);
             this.IN__S_X.Name = "IN__S_X";
-            this.IN__S_X.Size = new System.Drawing.Size(100, 23);
+            this.IN__S_X.Size = new System.Drawing.Size(32, 23);
             this.IN__S_X.TabIndex = 1;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 128);
+            this.label5.Location = new System.Drawing.Point(101, 64);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(51, 17);
             this.label5.TabIndex = 5;
@@ -144,7 +174,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 102);
+            this.label3.Location = new System.Drawing.Point(101, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(52, 17);
             this.label3.TabIndex = 3;
@@ -161,7 +191,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(63, 258);
+            this.button3.Location = new System.Drawing.Point(38, 397);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 5;
@@ -171,28 +201,97 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Location = new System.Drawing.Point(182, 28);
+            this.groupBox2.Location = new System.Drawing.Point(182, 11);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(300, 310);
+            this.groupBox2.Size = new System.Drawing.Size(314, 327);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.GroupBox2_Paint);
             this.groupBox2.Enter += new System.EventHandler(this.GroupBox2_Enter);
             // 
-            // listBox1
+            // label1
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 17;
-            this.listBox1.Location = new System.Drawing.Point(502, 11);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(280, 378);
-            this.listBox1.TabIndex = 11;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 122);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 17);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "圆半径：";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 171);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(68, 17);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "椭圆长轴：";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 198);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 17);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "椭圆短轴：";
+            // 
+            // IN_R
+            // 
+            this.IN_R.Location = new System.Drawing.Point(61, 119);
+            this.IN_R.Name = "IN_R";
+            this.IN_R.Size = new System.Drawing.Size(32, 23);
+            this.IN_R.TabIndex = 15;
+            // 
+            // IN_EL_S
+            // 
+            this.IN_EL_S.Location = new System.Drawing.Point(72, 198);
+            this.IN_EL_S.Name = "IN_EL_S";
+            this.IN_EL_S.Size = new System.Drawing.Size(32, 23);
+            this.IN_EL_S.TabIndex = 16;
+            // 
+            // IN_EL_L
+            // 
+            this.IN_EL_L.Location = new System.Drawing.Point(72, 168);
+            this.IN_EL_L.Name = "IN_EL_L";
+            this.IN_EL_L.Size = new System.Drawing.Size(32, 23);
+            this.IN_EL_L.TabIndex = 17;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.Location = new System.Drawing.Point(8, 11);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(51, 19);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "线绘制";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label9.Location = new System.Drawing.Point(9, 93);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 19);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "圆绘制";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label10.Location = new System.Drawing.Point(9, 145);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(65, 19);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "椭圆绘制";
             // 
             // CG_Win
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(798, 430);
+            this.ClientSize = new System.Drawing.Size(796, 460);
             this.Controls.Add(this.Tab_Draw);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -212,6 +311,7 @@
         private System.Windows.Forms.TabControl Tab_Draw;
         private System.Windows.Forms.TabPage tabPage2;
         public int S_x, S_y, E_x, E_y;
+        public int R, Eill_L, Eill_S;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox IN_S_Y;
@@ -224,6 +324,15 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckedListBox LineCheckList;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox IN_EL_L;
+        private System.Windows.Forms.TextBox IN_EL_S;
+        private System.Windows.Forms.TextBox IN_R;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label1;
     }
 }
 

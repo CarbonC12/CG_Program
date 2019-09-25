@@ -20,30 +20,33 @@ namespace CG_Program
             S_y = 0;
             E_x = 0;
             E_y = 0;
+            R = 0;
+            Eill_L = 0;
+            Eill_S = 0;
         }
 
 
 
         private void CG_Win_Load(object sender, EventArgs e)
         {
-         //
+            //
         }
 
 
 
 
-     
+
 
 
 
         private void TabPage2_Click(object sender, EventArgs e)
         {
-//
+            //
         }
 
         private void TabPage2_Paint(object sender, PaintEventArgs e)
         {
-//
+            //
         }
 
         private void GroupBox2_Paint(object sender, PaintEventArgs e)
@@ -51,22 +54,52 @@ namespace CG_Program
             Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
             Pen LinePen2 = new Pen(Color.FromArgb(174, 189, 191), 1);
             //绘制矩阵
-            for (int i = 10; i <= 310; i += 10)
+            for (int i = 20; i <= 320; i += 10)
             {
-                graphics_Line2.DrawLine(LinePen2, 0, i, 290, i);
+                graphics_Line2.DrawLine(LinePen2, 0, i, 300, i);
             }
             for (int i = 0; i <= 300; i += 10)
-                graphics_Line2.DrawLine(LinePen2, i, 10, i, 300);
+                graphics_Line2.DrawLine(LinePen2, i, 20, i, 320);
         }
 
-        private void MyDraw(int x,int y)
+        private void MyDraw(int x, int y)
         {
             Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
             Pen PointPen = new Pen(Color.Red, 1);
             Brush b = new SolidBrush(Color.Red);//声明的画刷
-            graphics_Line2.DrawEllipse(PointPen, x*10 - 3, (30-y)*10 - 3, 5, 5);
-            graphics_Line2.FillEllipse(b, x*10 - 3, (30-y)*10 - 3, 5, 5);
+            graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
             System.Threading.Thread.Sleep(100);
+        }
+
+        private void CenterMyDraw(int x, int y)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.Red, 1);
+            Brush b = new SolidBrush(Color.Red);//声明的画刷
+            graphics_Line2.DrawEllipse(PointPen, 150 + x * 10 - 3, (32 - 16 + y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, 150 + x * 10 - 3, (32 - 16 + y) * 10 - 3, 5, 5);
+            System.Threading.Thread.Sleep(100);
+        }
+
+        private void RoudDraw(int x, int y)
+        {
+            CenterMyDraw(x, y);
+            CenterMyDraw(x, -y);
+            CenterMyDraw(-x, y);
+            CenterMyDraw(-x, -y);
+            CenterMyDraw(y, x);
+            CenterMyDraw(y, -x);
+            CenterMyDraw(-y, x);
+            CenterMyDraw(-y, -x);
+        }
+
+        private void EllipseDraw(int x, int y)
+        {
+            CenterMyDraw(x, y);
+            CenterMyDraw(x, -y);
+            CenterMyDraw(-x, -y);
+            CenterMyDraw(-x, y);
         }
 
         private void GroupBox2_Enter(object sender, EventArgs e)
@@ -79,34 +112,80 @@ namespace CG_Program
             Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
             graphics_Line2.Clear(Color.White);
             GroupBox2_Paint(null, null);
-            try
+            if (LineCheckList.GetItemChecked(0) || LineCheckList.GetItemChecked(1)||LineCheckList.GetItemChecked(2))
             {
-                S_x = Convert.ToInt32(IN__S_X.Text);
-                S_y = Convert.ToInt32(IN_S_Y.Text);
-                E_x = Convert.ToInt32(IN_E_X.Text);
-                E_y = Convert.ToInt32(IN_E_Y.Text);
-            }
-            catch (Exception ec)
-            {
-                MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (S_x > 29 || E_x > 29 || S_y > 29 || E_y > 29)
-            {
-                MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                if (LineCheckList.GetItemChecked(0))
-                    DDA();
-                else if (LineCheckList.GetItemChecked(1))
-                    Bresenham();
+                try
+                {
+                    S_x = Convert.ToInt32(IN__S_X.Text);
+                    S_y = Convert.ToInt32(IN_S_Y.Text);
+                    E_x = Convert.ToInt32(IN_E_X.Text);
+                    E_y = Convert.ToInt32(IN_E_Y.Text);
+                }
+                catch (Exception ec)
+                {
+                    MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (S_x > 30 || E_x > 30 || S_y > 30 || E_y > 30)
+                {
+                    MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 else
-                    New_Bresenham();
+                {
+                    if (LineCheckList.GetItemChecked(0))
+                        DDA();
+                    else if (LineCheckList.GetItemChecked(1))
+                        Bresenham();
+                    else if(LineCheckList.GetItemChecked(2))
+                        New_Bresenham();
+                }
             }
-
-
+            else if(LineCheckList.GetItemChecked(3)||LineCheckList.GetItemChecked(4))
+            {
+                try
+                {
+                    R = Convert.ToInt32(IN_R.Text);
+                }
+                catch (Exception ec)
+                {
+                    MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (R>15)
+                {
+                    MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    if (LineCheckList.GetItemChecked(3))
+                        Round_MiddlePoint();
+                    else if (LineCheckList.GetItemChecked(4))
+                        Round_Bresenham();
+                }
+            }
+            else if(LineCheckList.GetItemChecked(5))
+            {
+                try
+                {
+                    Eill_L = Convert.ToInt32(IN_EL_L.Text);
+                    Eill_S = Convert.ToInt32(IN_EL_S.Text);
+                }
+                catch (Exception ec)
+                {
+                    MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (R > 15)
+                {
+                    MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    Ellipse_MiddlePoint();
+                }
+            }
         }
+
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -135,8 +214,8 @@ namespace CG_Program
                 int x1;
                 float y1;
                 float k;
-                S_y = 29 - S_y;
-                E_y = 29 - E_y;
+                S_y = 30 - S_y;
+                E_y = 30 - E_y;
                 x1 = S_x;
                 y1 = S_y;
                 det_y = 0 - det_y;
@@ -148,7 +227,7 @@ namespace CG_Program
                         float tmp2;
                         tmp2 = y1 + (float)0.5;
                         ShowMessage("X=" + x1 + "   Y=" + y1 + "  K=" + k);
-                        MyDraw(x1, 29-(int)tmp2);
+                        MyDraw(x1, 30-(int)tmp2);
                         y1 = y1 + k;
                     }
                 }
@@ -157,12 +236,12 @@ namespace CG_Program
                     float x2;
                     int y2;
                     float k2;
-                    S_y = 29 - S_y;
-                    E_y = 29 - E_y;
+                    S_y = 30 - S_y;
+                    E_y = 30 - E_y;
                     x2 = S_x;
                     y2 = S_y;
                     k2 = det_x / det_y;
-                    for (y2 = 29-S_y; y2 <= 29-E_y; y2++)
+                    for (y2 = 30-S_y; y2 <= 30-E_y; y2++)
                     {
                         float tmp3;
                         tmp3 = x2 + (float)0.5;
@@ -242,11 +321,11 @@ namespace CG_Program
                     k = det_y / det_x;
                     e = -0.5f;
                     x = S_x;
-                    y = 29-S_y;
+                    y = 30-S_y;
                     for (int i = 0; i <= det_x; i++)
                     {
                         ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
-                        MyDraw(x, 29-y);
+                        MyDraw(x, 30-y);
                         x = x + 1;
                         e = e + k;
                         if (e >= 0)
@@ -264,11 +343,11 @@ namespace CG_Program
                     k = det_x / det_y;
                     e = -0.5f;
                     x = S_x;
-                    y = 29-S_y;
+                    y = 30-S_y;
                     for (int i = 0; i <= det_y; i++)
                     {
                         ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
-                        MyDraw(x, 29-y);
+                        MyDraw(x, 30-y);
                         y = y + 1;
                         e = e + k;
                         if (e >= 0)
@@ -350,8 +429,8 @@ namespace CG_Program
             y = S_y;
             if (det_y < 0)
             {
-                S_y = 29 - S_y;
-                E_y = 29 - E_y;
+                S_y = 30 - S_y;
+                E_y = 30 - E_y;
                 x = S_x;
                 y = S_y;
                 det_y = 0 - det_y;
@@ -360,7 +439,7 @@ namespace CG_Program
                     for (int i = 0; i <= det_x; i++)
                     {
                         ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
-                        MyDraw(x, 29-y);
+                        MyDraw(x, 30-y);
                         
                         x++;
                         line_e = line_e + 2 * det_y;
@@ -379,7 +458,7 @@ namespace CG_Program
                     for (int i = 0; i <= det_y; i++)
                     {
                         ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
-                        MyDraw(x, 29-y);
+                        MyDraw(x, 30-y);
                         y++;
                         line_e = line_e + 2 * det_x;
                         if (line_e >= 0)
@@ -427,6 +506,22 @@ namespace CG_Program
                     }
                 }
             }
+        }
+
+        private void Round_MiddlePoint()
+        {
+
+
+        }
+
+        private void Round_Bresenham()
+        {
+
+        }
+
+        private void Ellipse_MiddlePoint()
+        {
+            
         }
 
         private void LineCheckList_ItemCheck(object sender, ItemCheckEventArgs e)
