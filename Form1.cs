@@ -69,7 +69,6 @@ namespace CG_Program
             Brush b = new SolidBrush(Color.Red);//声明的画刷
             graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
             graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
-            System.Threading.Thread.Sleep(100);
         }
 
         private void CenterMyDraw(int x, int y)
@@ -77,9 +76,8 @@ namespace CG_Program
             Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
             Pen PointPen = new Pen(Color.Red, 1);
             Brush b = new SolidBrush(Color.Red);//声明的画刷
-            graphics_Line2.DrawEllipse(PointPen, 150 + x * 10 - 3, (32 - 16 + y) * 10 - 3, 5, 5);
-            graphics_Line2.FillEllipse(b, 150 + x * 10 - 3, (32 - 16 + y) * 10 - 3, 5, 5);
-            System.Threading.Thread.Sleep(100);
+            graphics_Line2.DrawEllipse(PointPen, 150 + x * 10 - 3, (33 - 16 + y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, 150 + x * 10 - 3, (33 - 16 + y) * 10 - 3, 5, 5);
         }
 
         private void RoudDraw(int x, int y)
@@ -100,6 +98,20 @@ namespace CG_Program
             CenterMyDraw(x, -y);
             CenterMyDraw(-x, -y);
             CenterMyDraw(-x, y);
+        }
+
+        private void DrawRealRound(int r)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.Black, 2);
+            graphics_Line2.DrawEllipse(PointPen, 150 - r*10, 170 - r*10, 20*r, 20*r);
+        }
+
+        private void DrawRealEillpse(int a,int b)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.Black, 2);
+            graphics_Line2.DrawEllipse(PointPen, 150 - a * 10, 170 - b * 10, 20 * a, 20 * b);
         }
 
         private void GroupBox2_Enter(object sender, EventArgs e)
@@ -175,7 +187,7 @@ namespace CG_Program
                     MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                if (R > 15)
+                if (Eill_L > 15||Eill_S>15)
                 {
                     MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -510,18 +522,132 @@ namespace CG_Program
 
         private void Round_MiddlePoint()
         {
-
+            int Rx, Ry;
+            listBox1.Items.Clear();
+            float d;
+            Rx = 0;
+            Ry = R;
+            d = (float)1.25 - R;
+            ShowMessage("X=" + Rx + "   Y=" + Ry + "   D=" + d);
+            RoudDraw(Rx, Ry);
+            while(Rx<=Ry)
+            {
+                if (d < 0)
+                    d = d + 2 * Rx + 3;
+                else
+                {
+                    d = d + 2 * (Rx - Ry) + 5;
+                    Ry--;
+                }
+                Rx++;
+                ShowMessage("X=" + Rx + "   Y=" + Ry + "   D=" + d);
+                RoudDraw(Rx, Ry);
+            }
+            DrawRealRound(R);
 
         }
 
         private void Round_Bresenham()
         {
-
+            int Rx, Ry, det, detHD, detDV, Sign;
+            listBox1.Items.Clear();
+            Rx = 0;Ry = R;
+            detHD = 0;
+            detDV = 0;
+            det = 2 * (1 - R);
+            while(Ry>=0)
+            {
+                ShowMessage("X=" + Rx + "   Y=" + Ry + "  DET=" + det + "   DetHD=" + detHD + "   DetDV=" + detDV);
+                RoudDraw(Rx, Ry);
+                if (det < 0)
+                {
+                    detHD = 2 * (det + Ry) - 1;
+                    if (detHD <= 0)
+                        Sign = 1;
+                    else
+                        Sign = 2;
+                }
+                else if (det > 0)
+                {
+                    detDV = 2 * (det - Rx) - 1;
+                    if (detDV < 0)
+                        Sign = 2;
+                    else
+                        Sign = 3;
+                }
+                else
+                    Sign = 2;
+                switch(Sign)
+                {
+                    case 1:
+                        Rx++;
+                        det = det + 2 * Rx + 1;
+                        break;
+                    case 2:
+                        Rx++;
+                        Ry--;
+                        det = det + 2 * (Rx - Ry + 1);
+                        break;
+                    case 3:
+                        Ry--;
+                        det = det + (-2 * Ry + 1);
+                        break;
+                }
+            }
+            DrawRealRound(R);
         }
 
         private void Ellipse_MiddlePoint()
         {
-            
+            listBox1.Items.Clear();
+            int a, b, x, y;
+            float det;
+            a = Eill_L;
+            b = Eill_S;
+            x = 0;
+            y = Eill_S;
+            det = b * b + a * a * (-b + (float)0.25);
+            EllipseDraw(x, y);
+            ShowMessage("X=" + x + "   Y=" + y + "   Det=" + det);
+            while(y>=0)
+            {
+                if (b * b * (x + 1) < a * a * (y - (float)0.5))
+                {
+                    if (det < 0)
+                    {
+                        det += b * b * (2 * x + 3);
+                    }
+                    else
+                    {
+                        det += b * b * (2 * x + 3) + a * a * (-2 * y + 2);
+                        y--;
+                    }
+                    x++;
+                    ShowMessage("X=" + x + "   Y=" + y + "   Det=" + det);
+                    EllipseDraw(x, y);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            while(y>=0)
+            {
+                det = b * b * (x + 0.5f) * (x + 0.5f) + a * a * (y - 1) * (y - 1) - a * a * b * b;
+                if(det>0)
+                {
+                    det += a * a * (-2 * y + 3);
+                }
+                else
+                {
+                    det += b * b * (2 * x + 2) + a * a * (-2 * y + 3);
+                    x++;
+                }
+                y--;
+                ShowMessage("X=" + x + "   Y=" + y + "   Det=" + det);
+                EllipseDraw(x, y);
+            }
+            DrawRealEillpse(a, b);
         }
 
         private void LineCheckList_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -536,7 +662,7 @@ namespace CG_Program
         private void ShowMessage(string str)
         {
             listBox1.Items.Insert(0,str);
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(200);
             Application.DoEvents();
 
         }
