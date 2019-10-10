@@ -196,10 +196,11 @@
             "IntegerBresenham",
             "圆的中点算法",
             "圆的Bresenham算法",
-            "椭圆绘制的中点算法"});
+            "椭圆绘制的中点算法",
+            "扫描线的种子填充算法"});
             this.LineCheckList.Location = new System.Drawing.Point(13, 223);
             this.LineCheckList.Name = "LineCheckList";
-            this.LineCheckList.Size = new System.Drawing.Size(140, 166);
+            this.LineCheckList.Size = new System.Drawing.Size(150, 166);
             this.LineCheckList.TabIndex = 10;
             this.LineCheckList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.LineCheckList_ItemCheck);
             // 
@@ -311,7 +312,10 @@
         private System.Windows.Forms.TabControl Tab_Draw;
         private System.Windows.Forms.TabPage tabPage2;
         public int S_x, S_y, E_x, E_y;
-        public int R, Eill_L, Eill_S;
+        public int R, Eill_L, Eill_S,P_x,P_y;
+        public int Sign;
+        public int[,] BordPoint = new int[2,200];
+        public int PointNumber;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox IN_S_Y;

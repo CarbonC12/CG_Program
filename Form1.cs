@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Runtime.InteropServices;
 namespace CG_Program
 {
     public partial class CG_Win : Form
@@ -23,19 +23,62 @@ namespace CG_Program
             R = 0;
             Eill_L = 0;
             Eill_S = 0;
+            P_x = 0;
+            P_y = 0;
+            Sign = 0;
+            PointNumber = 0;
         }
-
-
 
         private void CG_Win_Load(object sender, EventArgs e)
         {
-            //
+            groupBox2.MouseDown += new MouseEventHandler(groupBox2_MouseDown);
+            //groupBox2.MouseUp += new MouseEventHandler(groupBox1_MouseUp);
+            PointNumber = 0;
+            BordPoint[0, 0] = -1;
+            BordPoint[1, 0] = -1;
         }
 
+        void groupBox2_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (Sign == 1)
+            {
+                if (e.X % 10 >= 5)
+                    P_x = e.X / 10 + 1;
+                else
+                    P_x = e.X / 10;
 
-
-
-
+                if ((this.groupBox2.Height - e.Y) % 10 >= 5)
+                    P_y = (this.groupBox2.Height - e.Y) / 10;
+                else
+                    P_y = (this.groupBox2.Height - e.Y) / 10 - 1;
+                if (P_x == BordPoint[0, 0] && P_y == BordPoint[1, 0])
+                {
+                    Sign = 0;
+                    int tmpNumber = PointNumber;
+                    for (int i=0;i< tmpNumber; i++)
+                    {
+                        if (i == tmpNumber - 1)
+                        {
+                            NEW_DDA(BordPoint[0, 0], BordPoint[1, 0], BordPoint[0, i], BordPoint[1, i]);
+                        }
+                        else
+                            NEW_DDA(BordPoint[0, i], BordPoint[1, i], BordPoint[0, i + 1], BordPoint[1, i + 1]);
+                    }
+                }
+                else
+                {
+                    BordPoint[0, PointNumber] = P_x;
+                    BordPoint[1, PointNumber] = P_y;
+                    PointNumber+=1;
+                    MyDraw(P_x, P_y);
+                    ShowMessage("X=" + P_x + "  Y=" + P_y+"  ");
+                }
+            }
+            else
+            {
+                //
+            }
+        }
 
 
 
@@ -60,6 +103,7 @@ namespace CG_Program
             }
             for (int i = 0; i <= 300; i += 10)
                 graphics_Line2.DrawLine(LinePen2, i, 20, i, 320);
+            Pen LinePen3 = new Pen(Color.FromArgb(255,0,0), 1);
         }
 
         private void MyDraw(int x, int y)
@@ -69,6 +113,18 @@ namespace CG_Program
             Brush b = new SolidBrush(Color.Red);//声明的画刷
             graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
             graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+        }
+
+        private void NEW_MyDraw(int x,int y)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.Red, 1);
+            Brush b = new SolidBrush(Color.Red);//声明的画刷
+            graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            BordPoint[0, PointNumber] = P_x;
+            BordPoint[1, PointNumber] = P_y;
+            PointNumber++;
         }
 
         private void CenterMyDraw(int x, int y)
@@ -115,8 +171,8 @@ namespace CG_Program
         }
 
         private void GroupBox2_Enter(object sender, EventArgs e)
-        {
-            //
+        {   
+           //
         }
 
         private void Button3_Click(object sender, EventArgs e)
@@ -126,6 +182,7 @@ namespace CG_Program
             GroupBox2_Paint(null, null);
             if (LineCheckList.GetItemChecked(0) || LineCheckList.GetItemChecked(1)||LineCheckList.GetItemChecked(2))
             {
+                Sign = 0;
                 try
                 {
                     S_x = Convert.ToInt32(IN__S_X.Text);
@@ -154,6 +211,7 @@ namespace CG_Program
             }
             else if(LineCheckList.GetItemChecked(3)||LineCheckList.GetItemChecked(4))
             {
+                Sign = 0;
                 try
                 {
                     R = Convert.ToInt32(IN_R.Text);
@@ -177,6 +235,7 @@ namespace CG_Program
             }
             else if(LineCheckList.GetItemChecked(5))
             {
+                Sign = 0;
                 try
                 {
                     Eill_L = Convert.ToInt32(IN_EL_L.Text);
@@ -195,6 +254,10 @@ namespace CG_Program
                 {
                     Ellipse_MiddlePoint();
                 }
+            }
+            else if(LineCheckList.GetItemChecked(6))
+            {
+                Sign = 1;
             }
         }
 
@@ -258,7 +321,7 @@ namespace CG_Program
                         float tmp3;
                         tmp3 = x2 + (float)0.5;
                         ShowMessage("X=" + x2 + "   Y=" + y2 + "  K=" + k2);
-                        MyDraw((int)tmp3,29-y2);
+                        MyDraw((int)tmp3,30-y2);
                         x2 = x2 + k2;
                     }
                 }
@@ -302,6 +365,107 @@ namespace CG_Program
             }
 
             
+
+        }
+
+        private void NEW_DDA(int S_x,int S_y,int E_x,int E_y)
+        {
+            int tmp;
+            listBox1.Items.Clear();
+            if (E_x <= S_x)
+            {
+                tmp = E_x;
+                E_x = S_x;
+                S_x = tmp;
+
+                tmp = E_y;
+                E_y = S_y;
+                S_y = tmp;
+            }
+            float det_x, det_y;
+            det_x = E_x - S_x;
+            det_y = E_y - S_y;
+            if (det_y < 0)
+            {
+                int x1;
+                float y1;
+                float k;
+                S_y = 30 - S_y;
+                E_y = 30 - E_y;
+                x1 = S_x;
+                y1 = S_y;
+                det_y = 0 - det_y;
+                if (det_x >= det_y)
+                {
+                    k = det_y / det_x;
+                    for (x1 = S_x; x1 <= E_x; x1++)
+                    {
+                        float tmp2;
+                        tmp2 = y1 + (float)0.5;
+                        ShowMessage("X=" + x1 + "   Y=" + y1 + "  K=" + k);
+                        NEW_MyDraw(x1, 30 - (int)tmp2);
+                        y1 = y1 + k;
+                    }
+                }
+                else
+                {
+                    float x2;
+                    int y2;
+                    float k2;
+                    S_y = 30 - S_y;
+                    E_y = 30 - E_y;
+                    x2 = S_x;
+                    y2 = S_y;
+                    k2 = det_x / det_y;
+                    for (y2 = 30 - S_y; y2 <= 30 - E_y; y2++)
+                    {
+                        float tmp3;
+                        tmp3 = x2 + (float)0.5;
+                        ShowMessage("X=" + x2 + "   Y=" + y2 + "  K=" + k2);
+                        NEW_MyDraw((int)tmp3, 30 - y2);
+                        x2 = x2 + k2;
+                    }
+                }
+            }
+            else
+            {
+                int x3;
+                float y3;
+                float k3;
+                x3 = S_x;
+                y3 = S_y;
+                if (det_x >= det_y)
+                {
+                    k3 = det_y / det_x;
+                    for (x3 = S_x; x3 <= E_x; x3++)
+                    {
+                        float tmp2;
+                        tmp2 = y3 + (float)0.5;
+                        ShowMessage("X=" + x3 + "   Y=" + y3 + "  K=" + k3);
+                        NEW_MyDraw(x3, (int)tmp2);
+                        y3 = y3 + k3;
+                    }
+                }
+                else
+                {
+                    float x4;
+                    int y4;
+                    float k4;
+                    x4 = S_x;
+                    y4 = S_y;
+                    k4 = det_x / det_y;
+                    for (y4 = S_y; y4 <= E_y; y4++)
+                    {
+                        float tmp3;
+                        tmp3 = x4 + (float)0.5;
+                        ShowMessage("X=" + x4 + "   Y=" + y4 + "  K=" + k4);
+                        NEW_MyDraw((int)tmp3, y4);
+                        x4 = x4 + k4;
+                    }
+                }
+            }
+
+
 
         }
 
