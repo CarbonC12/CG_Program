@@ -314,8 +314,13 @@
         public int S_x, S_y, E_x, E_y;
         public int R, Eill_L, Eill_S,P_x,P_y;
         public int Sign;
-        public int[,] BordPoint = new int[2,200];
+        public int[,] BordPoint = new int[2,900];
+        public int[,] PointStack = new int[2, 30];
+        public int top;
         public int PointNumber;
+        public int IsGetSeed;
+        public int x_Right, x_Left;
+        public int Stack_x, Stack_y;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox IN_S_Y;

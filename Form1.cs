@@ -27,15 +27,15 @@ namespace CG_Program
             P_y = 0;
             Sign = 0;
             PointNumber = 0;
+            IsGetSeed = 0;
+            Stack_x = 0;
+            Stack_y = 0;
         }
 
         private void CG_Win_Load(object sender, EventArgs e)
         {
             groupBox2.MouseDown += new MouseEventHandler(groupBox2_MouseDown);
             //groupBox2.MouseUp += new MouseEventHandler(groupBox1_MouseUp);
-            PointNumber = 0;
-            BordPoint[0, 0] = -1;
-            BordPoint[1, 0] = -1;
         }
 
         void groupBox2_MouseDown(object sender, MouseEventArgs e)
@@ -54,6 +54,7 @@ namespace CG_Program
                 if (P_x == BordPoint[0, 0] && P_y == BordPoint[1, 0])
                 {
                     Sign = 0;
+                    IsGetSeed = 1;
                     int tmpNumber = PointNumber;
                     for (int i=0;i< tmpNumber; i++)
                     {
@@ -69,9 +70,31 @@ namespace CG_Program
                 {
                     BordPoint[0, PointNumber] = P_x;
                     BordPoint[1, PointNumber] = P_y;
-                    PointNumber+=1;
+                    PointNumber++;
                     MyDraw(P_x, P_y);
                     ShowMessage("X=" + P_x + "  Y=" + P_y+"  ");
+                }
+            }
+            else if(IsGetSeed==1)
+            {
+                if (e.X % 10 >= 5)
+                    P_x = e.X / 10 + 1;
+                else
+                    P_x = e.X / 10;
+
+                if ((this.groupBox2.Height - e.Y) % 10 >= 5)
+                    P_y = (this.groupBox2.Height - e.Y) / 10;
+                else
+                    P_y = (this.groupBox2.Height - e.Y) / 10 - 1;
+                MyDraw(P_x, P_y);
+                Push(P_x, P_y);
+                IsGetSeed = 0;
+                while (top > 0)
+                {
+                    Pop();
+                    x_Right = Stack_x + FillLineRight(Stack_x, Stack_y);
+                    x_Left = Stack_x - FillLineLeft(Stack_x, Stack_y);
+                    SearchNewSeed(x_Left, x_Right,Stack_y);
                 }
             }
             else
@@ -115,6 +138,19 @@ namespace CG_Program
             graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
         }
 
+        private void SeedMyDraw(int x, int y)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.Yellow, 1);
+            Brush b = new SolidBrush(Color.Yellow);//声明的画刷
+            graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            BordPoint[0, PointNumber] = x;
+            BordPoint[1, PointNumber] = y;
+            ShowMessage("种子点-->X=" + x + "  Y=" + y);
+            PointNumber++;
+        }
+
         private void NEW_MyDraw(int x,int y)
         {
             Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
@@ -122,8 +158,8 @@ namespace CG_Program
             Brush b = new SolidBrush(Color.Red);//声明的画刷
             graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
             graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
-            BordPoint[0, PointNumber] = P_x;
-            BordPoint[1, PointNumber] = P_y;
+            BordPoint[0, PointNumber] = x;
+            BordPoint[1, PointNumber] = y;
             PointNumber++;
         }
 
@@ -258,6 +294,13 @@ namespace CG_Program
             else if(LineCheckList.GetItemChecked(6))
             {
                 Sign = 1;
+                PointNumber = 0;
+                ResetStack();
+                for(int i=0;i<900;i++)
+                {
+                    BordPoint[0,i] = 0;
+                    BordPoint[1,i] = 0;
+                }
             }
         }
 
@@ -826,9 +869,139 @@ namespace CG_Program
         private void ShowMessage(string str)
         {
             listBox1.Items.Insert(0,str);
-            System.Threading.Thread.Sleep(200);
+            System.Threading.Thread.Sleep(100);
             Application.DoEvents();
 
         }
+
+        private void ResetStack()
+        {
+            top = 0;
+            for(int i=0;i<30;i++)
+            {
+                PointStack[0, i] = 0;
+                PointStack[1, i] = 0;
+            }
+        }
+
+        private void Push(int x,int y)
+        {
+            PointStack[0, top] = x;
+            PointStack[1, top] = y;
+            top++;
+            SeedMyDraw(x, y);
+            //MessageBox.Show("Push X=" + x + "  Y=" + y+"  Top="+top);
+        }
+
+        private void Pop()
+        {
+            Stack_x = PointStack[0, top-1];
+            Stack_y = PointStack[1, top-1];
+            //MessageBox.Show("弹出" + Stack_x + " " + Stack_y);
+            top--;
+        }
+
+        private int FillLineRight(int Seed_x,int Seed_y)
+        {
+            int time = 0;
+            while (true)
+            {
+                Seed_x++;
+                if (IsBorder(Seed_x, Seed_y))
+                { return time; }
+                else
+                {
+                    NEW_MyDraw(Seed_x, Seed_y);
+                    time++;
+                }
+            }
+        }
+        private int FillLineLeft(int Seed_x, int Seed_y)
+        {
+            int time = 0;
+            while (true)
+            {
+                Seed_x--;
+                if (IsBorder(Seed_x, Seed_y))
+                { return time; }
+                else
+                {
+                    NEW_MyDraw(Seed_x, Seed_y);
+                    time++;
+                }
+            }
+        }
+
+        private bool IsBorder(int x,int y)
+        {
+            int IsBorderNum = 0;
+            for(int tmp=0;tmp<PointNumber;tmp++)
+            {
+                if (x == BordPoint[0, tmp] && y == BordPoint[1, tmp])
+                {
+                    IsBorderNum = 1;
+                    break;
+                }
+                else
+                    IsBorderNum = 0;
+            }
+            if (IsBorderNum == 1)
+                return true;
+            else
+                return false;
+        }
+
+        private void SearchNewSeed(int BordLeft,int BordRight,int RightNow_y)
+        {
+            int tmp = BordLeft;
+            int tmp_x = 0;
+            int tmp_y = 0;
+            RightNow_y++;
+            while (tmp <= BordRight)
+                {
+                    if (!IsBorder(tmp, RightNow_y))
+                    {
+                        for (int i = 0; i < PointNumber; i++)
+                        {
+                            if (RightNow_y == BordPoint[1, i])
+                                if (tmp < BordPoint[0, i])
+                                {
+                                    tmp_x = tmp;
+                                    tmp_y = RightNow_y;
+                                }
+                        }
+                    }
+                    tmp++;
+                }
+            if(tmp_x!=0&&tmp_y!=0)
+            Push(tmp_x, tmp_y);
+            //FillLineRight(BordLeft, RightNow_y);
+            //FillLineLeft(BordLeft, RightNow_y);
+            RightNow_y -=2;
+            tmp_x = 0;
+            tmp_y = 0;
+            tmp = BordLeft;
+            while (tmp <= BordRight)
+                {
+                    if (!IsBorder(tmp, RightNow_y))
+                    {
+                        for (int i = 0; i < PointNumber; i++)
+                        {
+                            if (RightNow_y == BordPoint[1, i])
+                                if (tmp < BordPoint[0, i])
+                                {
+                                    tmp_x = tmp;
+                                    tmp_y = RightNow_y;
+                                }
+                        }
+                    }
+                    tmp++;
+                }
+            if (tmp_x != 0 && tmp_y != 0)
+                Push(tmp_x, tmp_y);
+            //FillLineRight(BordLeft, RightNow_y);
+            //FillLineLeft(BordLeft, RightNow_y);
+        }
+
     }
 }
