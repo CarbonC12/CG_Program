@@ -65,6 +65,7 @@ namespace CG_Program
                         else
                             NEW_DDA(BordPoint[0, i], BordPoint[1, i], BordPoint[0, i + 1], BordPoint[1, i + 1]);
                     }
+                    ThrowRightBord();
                 }
                 else
                 {
@@ -94,7 +95,7 @@ namespace CG_Program
                     Pop();
                     x_Right = Stack_x + FillLineRight(Stack_x, Stack_y);
                     x_Left = Stack_x - FillLineLeft(Stack_x, Stack_y);
-                    SearchNewSeed(x_Left, x_Right,Stack_y);
+                    TestSearchNewSeed(x_Left, x_Right,Stack_y);
                 }
             }
             else
@@ -1001,6 +1002,178 @@ namespace CG_Program
                 Push(tmp_x, tmp_y);
             //FillLineRight(BordLeft, RightNow_y);
             //FillLineLeft(BordLeft, RightNow_y);
+        }
+
+
+    private void TestSearchNewSeed(int BordLeft, int BordRight, int RightNow_y)
+    {
+        int tmp = BordLeft;
+        int tmp_x = 0;
+        int tmp_y = 0;
+            int x_min = 0;
+            int x_max = 0;
+        RightNow_y++;
+            x_min = FindMin(RightNow_y);
+            x_max = FindMax(RightNow_y);
+            while (tmp <= BordRight)
+        {
+            if (!IsBorder(tmp, RightNow_y))
+            {
+                    if (IsBorder(tmp + 1, RightNow_y))
+                    {
+                        if (tmp > x_min && tmp < x_max)
+                        {
+                            tmp_x = tmp;
+                            tmp_y = RightNow_y;
+                            Push(tmp_x, tmp_y);
+                        }
+                    }
+            }
+            tmp++;
+        }
+            if (tmp_x == 0 && tmp_y == 0)
+            {
+                tmp = BordLeft;
+                tmp_x = 0;
+                tmp_y = 0;
+                while (tmp <= BordRight)
+                {
+                    if (!IsBorder(tmp, RightNow_y))
+                    {
+                        for (int i = 0; i < PointNumber; i++)
+                        {
+                            if (RightNow_y == BordPoint[1, i])
+                                if (tmp < BordPoint[0, i])
+                                {
+                                    tmp_x = tmp;
+                                    tmp_y = RightNow_y;
+                                }
+                        }
+                    }
+                    tmp++;
+                }
+                if (tmp_x != 0 && tmp_y != 0)
+                    Push(tmp_x, tmp_y);
+            }
+            //FillLineRight(BordLeft, RightNow_y);
+            //FillLineLeft(BordLeft, RightNow_y);
+            RightNow_y -= 2;
+        tmp_x = 0;
+        tmp_y = 0;
+        tmp = BordLeft;
+        x_min = 0;
+        x_max = 0;
+        x_min = FindMin(RightNow_y);
+        x_max = FindMax(RightNow_y);
+            while (tmp <= BordRight)
+            {
+                if (!IsBorder(tmp, RightNow_y))
+                {
+                    if (IsBorder(tmp + 1, RightNow_y))
+                    {
+                        if (tmp > x_min && tmp < x_max)
+                        {
+                            tmp_x = tmp;
+                            tmp_y = RightNow_y;
+                            Push(tmp_x, tmp_y);
+                        }
+                    }
+                }
+                tmp++;
+            }
+            if(tmp_x==0&&tmp_y==0)
+            {
+                tmp_x = 0;
+                tmp_y = 0;
+                tmp = BordLeft;
+                while (tmp <= BordRight)
+                {
+                    if (!IsBorder(tmp, RightNow_y))
+                    {
+                        for (int i = 0; i < PointNumber; i++)
+                        {
+                            if (RightNow_y == BordPoint[1, i])
+                                if (tmp < BordPoint[0, i])
+                                {
+                                    tmp_x = tmp;
+                                    tmp_y = RightNow_y;
+                                }
+                        }
+                    }
+                    tmp++;
+                }
+                if (tmp_x != 0 && tmp_y != 0)
+                    Push(tmp_x, tmp_y);
+            }
+        //FillLineRight(BordLeft, RightNow_y);
+        //FillLineLeft(BordLeft, RightNow_y);
+    }
+
+    private int FindMin(int y)
+        {
+            int min = 100;
+            for(int i=0;i<PointNumber;i++)
+            {
+                if (y == BordPoint[1, i])
+                    if (min > BordPoint[0, i])
+                        min = BordPoint[0, i];
+            }
+            return min;
+        }
+
+    private int FindMax(int y)
+        {
+            int max = 0;
+            for (int i = 0; i < PointNumber; i++)
+            {
+                if (y == BordPoint[1, i])
+                    if (max < BordPoint[0, i])
+                        max = BordPoint[0, i];
+            }
+            return max;
+        }
+
+    private int FindYmin()
+        {
+            int min = 100;
+            for (int i = 0; i < PointNumber; i++)
+                if (min > BordPoint[1, i])
+                    min = BordPoint[1, i];
+            return min;
+        }
+        private int FindYmax()
+        {
+            int max = 0;
+            for (int i = 0; i < PointNumber; i++)
+                if (max < BordPoint[1, i])
+                    max = BordPoint[1, i];
+            return max;
+        }
+
+        private void ThrowRightBord()
+        {
+            int ymin, ymax, x,high;
+            ymin = FindYmin();
+            ymax = FindYmax();
+            high = ymax - ymin;
+            for(int i=ymin;i<=ymax;i++)
+            {
+                x = FindMax(i);
+                WhiteDraw(x, i);
+                if(IsBorder(x,i))
+                {
+                    WhiteDraw(x-1, i);
+                }
+            }
+        }
+
+        private void WhiteDraw(int x,int y)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.White, 1);
+            Brush b = new SolidBrush(Color.White);//声明的画刷
+            graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
         }
 
     }
