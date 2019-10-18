@@ -30,6 +30,16 @@
         {
             this.Tab_Draw = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox_RTY = new System.Windows.Forms.TextBox();
+            this.textBox_RTX = new System.Windows.Forms.TextBox();
+            this.textBox_LBY = new System.Windows.Forms.TextBox();
+            this.textBox_LBX = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label_BoxLB_y = new System.Windows.Forms.Label();
+            this.label_BoxLB_x = new System.Windows.Forms.Label();
+            this.label_info = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -62,11 +72,21 @@
             this.Tab_Draw.Margin = new System.Windows.Forms.Padding(0);
             this.Tab_Draw.Name = "Tab_Draw";
             this.Tab_Draw.SelectedIndex = 0;
-            this.Tab_Draw.Size = new System.Drawing.Size(799, 461);
+            this.Tab_Draw.Size = new System.Drawing.Size(808, 538);
             this.Tab_Draw.TabIndex = 0;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button1);
+            this.tabPage2.Controls.Add(this.textBox_RTY);
+            this.tabPage2.Controls.Add(this.textBox_RTX);
+            this.tabPage2.Controls.Add(this.textBox_LBY);
+            this.tabPage2.Controls.Add(this.textBox_LBX);
+            this.tabPage2.Controls.Add(this.label12);
+            this.tabPage2.Controls.Add(this.label11);
+            this.tabPage2.Controls.Add(this.label_BoxLB_y);
+            this.tabPage2.Controls.Add(this.label_BoxLB_x);
+            this.tabPage2.Controls.Add(this.label_info);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.label8);
@@ -91,12 +111,96 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 26);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(791, 431);
+            this.tabPage2.Size = new System.Drawing.Size(800, 508);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = " ";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.TabPage2_Click);
             this.tabPage2.Paint += new System.Windows.Forms.PaintEventHandler(this.TabPage2_Paint);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(346, 463);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 30;
+            this.button1.Text = "开始裁减";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // textBox_RTY
+            // 
+            this.textBox_RTY.Location = new System.Drawing.Point(477, 434);
+            this.textBox_RTY.Name = "textBox_RTY";
+            this.textBox_RTY.Size = new System.Drawing.Size(46, 23);
+            this.textBox_RTY.TabIndex = 29;
+            // 
+            // textBox_RTX
+            // 
+            this.textBox_RTX.Location = new System.Drawing.Point(477, 397);
+            this.textBox_RTX.Name = "textBox_RTX";
+            this.textBox_RTX.Size = new System.Drawing.Size(46, 23);
+            this.textBox_RTX.TabIndex = 28;
+            this.textBox_RTX.TextChanged += new System.EventHandler(this.TextBox_RTX_TextChanged);
+            // 
+            // textBox_LBY
+            // 
+            this.textBox_LBY.Location = new System.Drawing.Point(319, 434);
+            this.textBox_LBY.Name = "textBox_LBY";
+            this.textBox_LBY.Size = new System.Drawing.Size(46, 23);
+            this.textBox_LBY.TabIndex = 27;
+            // 
+            // textBox_LBX
+            // 
+            this.textBox_LBX.Location = new System.Drawing.Point(319, 400);
+            this.textBox_LBX.Name = "textBox_LBX";
+            this.textBox_LBX.Size = new System.Drawing.Size(46, 23);
+            this.textBox_LBX.TabIndex = 26;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(371, 403);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(91, 17);
+            this.label12.TabIndex = 25;
+            this.label12.Text = "裁剪框右上角X:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(371, 437);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(99, 17);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "裁剪框右下角Y：";
+            // 
+            // label_BoxLB_y
+            // 
+            this.label_BoxLB_y.AutoSize = true;
+            this.label_BoxLB_y.Location = new System.Drawing.Point(214, 437);
+            this.label_BoxLB_y.Name = "label_BoxLB_y";
+            this.label_BoxLB_y.Size = new System.Drawing.Size(99, 17);
+            this.label_BoxLB_y.TabIndex = 23;
+            this.label_BoxLB_y.Text = "裁剪框左下角Y：";
+            // 
+            // label_BoxLB_x
+            // 
+            this.label_BoxLB_x.AutoSize = true;
+            this.label_BoxLB_x.Location = new System.Drawing.Point(214, 403);
+            this.label_BoxLB_x.Name = "label_BoxLB_x";
+            this.label_BoxLB_x.Size = new System.Drawing.Size(100, 17);
+            this.label_BoxLB_x.TabIndex = 22;
+            this.label_BoxLB_x.Text = "裁剪框左下角X：";
+            // 
+            // label_info
+            // 
+            this.label_info.AutoSize = true;
+            this.label_info.Location = new System.Drawing.Point(214, 372);
+            this.label_info.Name = "label_info";
+            this.label_info.Size = new System.Drawing.Size(248, 17);
+            this.label_info.TabIndex = 21;
+            this.label_info.Text = "请在线绘制处填写需要裁剪线的起始点和终点";
             // 
             // label10
             // 
@@ -197,7 +301,8 @@
             "圆的中点算法",
             "圆的Bresenham算法",
             "椭圆绘制的中点算法",
-            "扫描线的种子填充算法"});
+            "扫描线的种子填充算法",
+            "Cohen裁减算法"});
             this.LineCheckList.Location = new System.Drawing.Point(13, 223);
             this.LineCheckList.Name = "LineCheckList";
             this.LineCheckList.Size = new System.Drawing.Size(150, 166);
@@ -292,7 +397,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 460);
+            this.ClientSize = new System.Drawing.Size(810, 537);
             this.Controls.Add(this.Tab_Draw);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -311,7 +416,7 @@
 
         private System.Windows.Forms.TabControl Tab_Draw;
         private System.Windows.Forms.TabPage tabPage2;
-        public int S_x, S_y, E_x, E_y;
+        public float S_x, S_y, E_x, E_y;
         public int R, Eill_L, Eill_S,P_x,P_y;
         public int Sign;
         public int[,] BordPoint = new int[2,900];
@@ -321,6 +426,9 @@
         public int IsGetSeed;
         public int x_Right, x_Left;
         public int Stack_x, Stack_y;
+        public int BoxLB_x, BoxLB_y, BoxRT_x, BoxRT_y;
+        public static int LEFT, RIGHT, BOTTOM, TOP;
+        public float k, k4, k2, k3;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox IN_S_Y;
@@ -342,6 +450,16 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox_RTY;
+        private System.Windows.Forms.TextBox textBox_RTX;
+        private System.Windows.Forms.TextBox textBox_LBY;
+        private System.Windows.Forms.TextBox textBox_LBX;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label_BoxLB_y;
+        private System.Windows.Forms.Label label_BoxLB_x;
+        private System.Windows.Forms.Label label_info;
     }
 }
 

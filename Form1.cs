@@ -30,6 +30,28 @@ namespace CG_Program
             IsGetSeed = 0;
             Stack_x = 0;
             Stack_y = 0;
+            BoxLB_x = 0;
+            BoxLB_y = 0;
+            BoxRT_x = 0;
+            BoxRT_y = 0;
+            label_info.Hide();
+            label_BoxLB_x.Hide();
+            textBox_LBX.Hide();
+            label12.Hide();
+            label11.Hide();
+            textBox_LBY.Hide();
+            textBox_RTY.Hide();
+            textBox_RTX.Hide();
+            button1.Hide();
+            label_BoxLB_y.Hide();
+            LEFT = 1;
+            RIGHT = 2;
+            BOTTOM = 4;
+            TOP = 8;
+            k = 0;
+            k4 = 0;
+            k2 = 0;
+            k3 = 0;
         }
 
         private void CG_Win_Load(object sender, EventArgs e)
@@ -65,7 +87,7 @@ namespace CG_Program
                         else
                             NEW_DDA(BordPoint[0, i], BordPoint[1, i], BordPoint[0, i + 1], BordPoint[1, i + 1]);
                     }
-                    ThrowRightBord();
+                    //ThrowRightBord();
                 }
                 else
                 {
@@ -131,6 +153,15 @@ namespace CG_Program
         }
 
         private void MyDraw(int x, int y)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.Black, 1);
+            Brush b = new SolidBrush(Color.Black);//声明的画刷
+            graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+        }
+
+        private void ColorDraw(int x, int y)
         {
             Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
             Pen PointPen = new Pen(Color.Red, 1);
@@ -240,10 +271,10 @@ namespace CG_Program
                 {
                     if (LineCheckList.GetItemChecked(0))
                         DDA();
-                    else if (LineCheckList.GetItemChecked(1))
-                        Bresenham();
-                    else if(LineCheckList.GetItemChecked(2))
-                        New_Bresenham();
+                    else if (LineCheckList.GetItemChecked(1)) ;
+                    //Bresenham();
+                    else if (LineCheckList.GetItemChecked(2)) ;
+                        //New_Bresenham();
                 }
             }
             else if(LineCheckList.GetItemChecked(3)||LineCheckList.GetItemChecked(4))
@@ -303,6 +334,20 @@ namespace CG_Program
                     BordPoint[1,i] = 0;
                 }
             }
+            else if(LineCheckList.GetItemChecked(7))
+            {
+                label_info.Show();
+                label_BoxLB_x.Show();
+                textBox_LBX.Show();
+                label12.Show();
+                label11.Show();
+                textBox_LBY.Show();
+                textBox_RTY.Show();
+                textBox_RTX.Show();
+                button1.Show();
+                label_BoxLB_y.Show();
+
+            }
         }
 
 
@@ -313,7 +358,8 @@ namespace CG_Program
 
         private void DDA()
         {
-            int tmp;
+            float tmp;
+            float tmpy1, tmpy2;
             listBox1.Items.Clear();
             if (E_x <= S_x)
             {
@@ -330,13 +376,12 @@ namespace CG_Program
             det_y = E_y - S_y;
             if(det_y<0)
             {
-                int x1;
+                float x1;
                 float y1;
-                float k;
-                S_y = 30 - S_y;
-                E_y = 30 - E_y;
+                tmpy1 = 30 - S_y;
+                tmpy2 = 30 - E_y;
                 x1 = S_x;
-                y1 = S_y;
+                y1 = tmpy1;
                 det_y = 0 - det_y;
                 if (det_x >= det_y)
                 {
@@ -345,18 +390,15 @@ namespace CG_Program
                     {
                         float tmp2;
                         tmp2 = y1 + (float)0.5;
-                        ShowMessage("X=" + x1 + "   Y=" + y1 + "  K=" + k);
-                        MyDraw(x1, 30-(int)tmp2);
+                        ShowMessage("X=" + x1 + "   Y=" + (30 - (int)tmp2) + "  K=" + k);
+                        MyDraw((int)x1, 30-(int)tmp2);
                         y1 = y1 + k;
                     }
                 }
                 else
                 {
                     float x2;
-                    int y2;
-                    float k2;
-                    S_y = 30 - S_y;
-                    E_y = 30 - E_y;
+                    float y2;
                     x2 = S_x;
                     y2 = S_y;
                     k2 = det_x / det_y;
@@ -364,17 +406,16 @@ namespace CG_Program
                     {
                         float tmp3;
                         tmp3 = x2 + (float)0.5;
-                        ShowMessage("X=" + x2 + "   Y=" + y2 + "  K=" + k2);
-                        MyDraw((int)tmp3,30-y2);
+                        ShowMessage("X=" + ((int)tmp3) + "   Y=" + (30 - y2) + "  K=" + k2);
+                        MyDraw((int)tmp3,(int)(30-y2));
                         x2 = x2 + k2;
                     }
                 }
             }
             else
             {
-                int x3;
+                float x3;
                 float y3;
-                float k3;
                 x3 = S_x;
                 y3 = S_y;
                 if (det_x >= det_y)
@@ -384,16 +425,15 @@ namespace CG_Program
                     {
                         float tmp2;
                         tmp2 = y3 + (float)0.5;
-                        ShowMessage("X=" + x3 + "   Y=" + y3 + "  K=" + k3);
-                        MyDraw(x3,(int)tmp2);
+                        ShowMessage("X=" + x3 + "   Y=" + ((int)tmp2) + "  K=" + k3);
+                        MyDraw((int)x3,(int)tmp2);
                         y3 = y3 + k3;
                     }
                 }
                 else
                 {
                     float x4;
-                    int y4;
-                    float k4;
+                    float y4;
                     x4 = S_x;
                     y4 = S_y;
                     k4 = det_x / det_y;
@@ -401,14 +441,105 @@ namespace CG_Program
                     {
                         float tmp3;
                         tmp3 = x4 + (float)0.5;
-                        ShowMessage("X=" + x4 + "   Y=" + y4 +"  K=" + k4);
-                        MyDraw((int)tmp3,y4);
+                        ShowMessage("X=" +((int)tmp3) + "   Y=" + y4 +"  K=" + k4);
+                        MyDraw((int)tmp3,(int)y4);
                         x4 = x4 + k4;
                     }
                 }
             }
 
             
+
+        }
+        private void ColorDDA()
+        {
+            float tmp;
+            listBox1.Items.Clear();
+            if (E_x <= S_x)
+            {
+                tmp = E_x;
+                E_x = S_x;
+                S_x = tmp;
+
+                tmp = E_y;
+                E_y = S_y;
+                S_y = tmp;
+            }
+            float det_x, det_y;
+            det_x = E_x - S_x;
+            det_y = E_y - S_y;
+            if (det_y < 0)
+            {
+                float x1;
+                float y1;
+                float tmpy1, tmpy2;
+                tmpy1 = 30 - S_y;
+                tmpy2 = 30 - E_y;
+                x1 = S_x;
+                y1 = tmpy1;
+                det_y = 0 - det_y;
+                if (det_x >= det_y)
+                {
+                    for (x1 = S_x; (int)(x1 + 0.5) <= (int)(E_x + 0.5); x1++)
+                    {
+                        float tmp2;
+                        tmp2 = y1 + (float)0.5;
+                        ShowMessage("X=" + (int)(x1 + 0.5) + "   Y=" + (30 - (int)tmp2) + "  K=" + k);
+                        ColorDraw((int)(x1+0.5), 30 - (int)tmp2);
+                        y1 = y1 + k;
+                    }
+                }
+                else
+                {
+                    float x2;
+                   float y2;
+                    x2 = S_x;
+                    y2 = S_y;
+                    for (y2 = 30 - S_y; (int)(y2+0.5) <= 30 - (int)(E_y+0.5); y2++)
+                    {
+                        float tmp3;
+                        tmp3 = x2 + (float)0.5;
+                        ShowMessage("X=" + ((int)tmp3) + "   Y=" + (30 - y2) + "  K=" + k2);
+                        ColorDraw((int)tmp3, (int)(30 - (int)(y2+0.5)));
+                        x2 = x2 + k2;
+                    }
+                }
+            }
+            else
+            {
+                float x3;
+                float y3;
+                x3 = S_x;
+                y3 = S_y;
+                if (det_x >= det_y)
+                {
+                    for (x3 = S_x; (int)(x3 + 0.5) <= (int)(E_x+0.5); x3++)
+                    {
+                        float tmp2;
+                        tmp2 = y3 + (float)0.5;
+                        ShowMessage("X=" + (int)(x3 + 0.5) + "   Y=" + ((int)tmp2) + "  K=" + k3);
+                        ColorDraw((int)(x3+0.5), (int)tmp2);
+                        y3 = y3 + k3;
+                    }
+                }
+                else
+                {
+                    float x4;
+                    float y4;
+                    x4 = S_x;
+                    y4 = S_y;
+                    for (y4 = S_y; (int)(y4 + 0.5) <= (int)(E_y + 0.5); y4++)
+                    {
+                        float tmp3;
+                        tmp3 = x4 + (float)0.5;
+                        ShowMessage("X=" + ((int)tmp3) + "   Y=" + (int)y4 + "  K=" + k4);
+                        ColorDraw((int)tmp3, (int)(y4+0.5));
+                        x4 = x4 + k4;
+                    }
+                }
+            }
+
+
 
         }
 
@@ -513,220 +644,220 @@ namespace CG_Program
 
         }
 
-        private void Bresenham()
-        {
-            int tmp;
-            listBox1.Items.Clear();
-            if (E_x <= S_x)
-            {
-                tmp = E_x;
-                E_x = S_x;
-                S_x = tmp;
+        //private void Bresenham()
+        //{
+        //    float tmp;
+        //    listBox1.Items.Clear();
+        //    if (E_x <= S_x)
+        //    {
+        //        tmp = E_x;
+        //        E_x = S_x;
+        //        S_x = tmp;
 
-                tmp = E_y;
-                E_y = S_y;
-                S_y = tmp;
-            }
+        //        tmp = E_y;
+        //        E_y = S_y;
+        //        S_y = tmp;
+        //    }
 
-            float det_x, det_y;
-            det_x = E_x - S_x;
-            det_y = E_y - S_y;
-            if (det_y < 0)
-            {
-                det_y = 0 - det_y;
-                if (det_x >= det_y)
-                {
-                    float k, e;
-                    int x, y;
-                    k = det_y / det_x;
-                    e = -0.5f;
-                    x = S_x;
-                    y = 30-S_y;
-                    for (int i = 0; i <= det_x; i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
-                        MyDraw(x, 30-y);
-                        x = x + 1;
-                        e = e + k;
-                        if (e >= 0)
-                        {
-                            y++;
-                            e = e - 1;
-                        }
-                    }
+        //    float det_x, det_y;
+        //    det_x = E_x - S_x;
+        //    det_y = E_y - S_y;
+        //    if (det_y < 0)
+        //    {
+        //        det_y = 0 - det_y;
+        //        if (det_x >= det_y)
+        //        {
+        //            float k, e;
+        //            float x, y;
+        //            k = det_y / det_x;
+        //            e = -0.5f;
+        //            x = S_x;
+        //            y = 30-S_y;
+        //            for (int i = 0; i <= det_x; i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
+        //                MyDraw((int)x, (int)30-y);
+        //                x = x + 1;
+        //                e = e + k;
+        //                if (e >= 0)
+        //                {
+        //                    y++;
+        //                    e = e - 1;
+        //                }
+        //            }
 
-                }
-                else
-                {
-                    float k, e;
-                    int x, y;
-                    k = det_x / det_y;
-                    e = -0.5f;
-                    x = S_x;
-                    y = 30-S_y;
-                    for (int i = 0; i <= det_y; i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
-                        MyDraw(x, 30-y);
-                        y = y + 1;
-                        e = e + k;
-                        if (e >= 0)
-                        {
-                            x++;
-                            e = e - 1;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (det_x >= det_y)
-                {
-                    float k, e;
-                    int x, y;
-                    k = det_y / det_x;
-                    e = -0.5f;
-                    x = S_x;
-                    y = S_y;
-                    for(int i=0;i<=det_x;i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
-                        MyDraw(x, y);
-                        x = x + 1;
-                        e = e + k;
-                        if(e>=0)
-                        {
-                            y++;
-                            e = e - 1;
-                        }
-                    }
+        //        }
+        //        else
+        //        {
+        //            float k, e;
+        //            int x, y;
+        //            k = det_x / det_y;
+        //            e = -0.5f;
+        //            x = S_x;
+        //            y = 30-S_y;
+        //            for (int i = 0; i <= det_y; i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
+        //                MyDraw(x, 30-y);
+        //                y = y + 1;
+        //                e = e + k;
+        //                if (e >= 0)
+        //                {
+        //                    x++;
+        //                    e = e - 1;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (det_x >= det_y)
+        //        {
+        //            float k, e;
+        //            int x, y;
+        //            k = det_y / det_x;
+        //            e = -0.5f;
+        //            x = S_x;
+        //            y = S_y;
+        //            for(int i=0;i<=det_x;i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   K=" + k + "   E=" + e);
+        //                MyDraw(x, y);
+        //                x = x + 1;
+        //                e = e + k;
+        //                if(e>=0)
+        //                {
+        //                    y++;
+        //                    e = e - 1;
+        //                }
+        //            }
 
-                }
-                else
-                {
-                    float k, e;
-                    int x, y;
-                    k = det_x / det_y;
-                    e = -0.5f;
-                    x = S_x;
-                    y = S_y;
-                    for (int i = 0; i <= det_y; i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   K=" + k  + "   E=" + e);
-                        MyDraw(x, y);
-                        y = y + 1;
-                        e = e + k;
-                        if (e >= 0)
-                        {
-                            x++;
-                            e = e - 1;
-                        }
-                    }
-                }
-            }
+        //        }
+        //        else
+        //        {
+        //            float k, e;
+        //            int x, y;
+        //            k = det_x / det_y;
+        //            e = -0.5f;
+        //            x = S_x;
+        //            y = S_y;
+        //            for (int i = 0; i <= det_y; i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   K=" + k  + "   E=" + e);
+        //                MyDraw(x, y);
+        //                y = y + 1;
+        //                e = e + k;
+        //                if (e >= 0)
+        //                {
+        //                    x++;
+        //                    e = e - 1;
+        //                }
+        //            }
+        //        }
+        //    }
 
-        }
-        private void New_Bresenham()
-        {
+        //}
+        //private void New_Bresenham()
+        //{
             
-            int tmp;
-            listBox1.Items.Clear();
-            if (E_x <= S_x)
-            {
-                tmp = E_x;
-                E_x = S_x;
-                S_x = tmp;
+        //    int tmp;
+        //    listBox1.Items.Clear();
+        //    if (E_x <= S_x)
+        //    {
+        //        tmp = E_x;
+        //        E_x = S_x;
+        //        S_x = tmp;
 
-                tmp = E_y;
-                E_y = S_y;
-                S_y = tmp;
-            }
-            int det_x, det_y, line_e, x, y;
-            det_x = E_x - S_x;
-            det_y = E_y - S_y;
-            line_e = 0 - det_x;
-            x = S_x;
-            y = S_y;
-            if (det_y < 0)
-            {
-                S_y = 30 - S_y;
-                E_y = 30 - E_y;
-                x = S_x;
-                y = S_y;
-                det_y = 0 - det_y;
-                if (det_x >= det_y)
-                {
-                    for (int i = 0; i <= det_x; i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
-                        MyDraw(x, 30-y);
+        //        tmp = E_y;
+        //        E_y = S_y;
+        //        S_y = tmp;
+        //    }
+        //    int det_x, det_y, line_e, x, y;
+        //    det_x = E_x - S_x;
+        //    det_y = E_y - S_y;
+        //    line_e = 0 - det_x;
+        //    x = S_x;
+        //    y = S_y;
+        //    if (det_y < 0)
+        //    {
+        //        S_y = 30 - S_y;
+        //        E_y = 30 - E_y;
+        //        x = S_x;
+        //        y = S_y;
+        //        det_y = 0 - det_y;
+        //        if (det_x >= det_y)
+        //        {
+        //            for (int i = 0; i <= det_x; i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
+        //                MyDraw(x, 30-y);
                         
-                        x++;
-                        line_e = line_e + 2 * det_y;
-                        if (line_e >= 0)
-                        {
-                            y++;
-                            line_e = line_e - 2 * det_x;
-                            //MessageBox.Show("e" + line_e);
-                        }
+        //                x++;
+        //                line_e = line_e + 2 * det_y;
+        //                if (line_e >= 0)
+        //                {
+        //                    y++;
+        //                    line_e = line_e - 2 * det_x;
+        //                    //MessageBox.Show("e" + line_e);
+        //                }
 
-                    }
-                }
-                else
-                {
-                    line_e = 0 - det_y;
-                    for (int i = 0; i <= det_y; i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
-                        MyDraw(x, 30-y);
-                        y++;
-                        line_e = line_e + 2 * det_x;
-                        if (line_e >= 0)
-                        {
-                            x++;
-                            line_e = line_e - 2 * det_y;
-                        }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            line_e = 0 - det_y;
+        //            for (int i = 0; i <= det_y; i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
+        //                MyDraw(x, 30-y);
+        //                y++;
+        //                line_e = line_e + 2 * det_x;
+        //                if (line_e >= 0)
+        //                {
+        //                    x++;
+        //                    line_e = line_e - 2 * det_y;
+        //                }
 
-                    }
-                }
-            }
-            else
-            {
-                if (det_x >= det_y)
-                {
-                    for (int i = 0; i <= det_x; i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
-                        MyDraw(x, y);
-                        x++;
-                        line_e = line_e + 2 * det_y;
-                        if (line_e >= 0)
-                        {
-                            y++;
-                            line_e = line_e - 2 * det_x;
-                        }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (det_x >= det_y)
+        //        {
+        //            for (int i = 0; i <= det_x; i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
+        //                MyDraw(x, y);
+        //                x++;
+        //                line_e = line_e + 2 * det_y;
+        //                if (line_e >= 0)
+        //                {
+        //                    y++;
+        //                    line_e = line_e - 2 * det_x;
+        //                }
 
-                    }
-                }
-                else
-                {
-                    line_e = 0 - det_y;
-                    for (int i = 0; i <= det_y; i++)
-                    {
-                        ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
-                        MyDraw(x, y);
-                        y++;
-                        line_e = line_e + 2 * det_x;
-                        if (line_e >= 0)
-                        {
-                            x++;
-                            line_e = line_e - 2 * det_y;
-                        }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            line_e = 0 - det_y;
+        //            for (int i = 0; i <= det_y; i++)
+        //            {
+        //                ShowMessage("X=" + x + "   Y=" + y + "   E=" + line_e);
+        //                MyDraw(x, y);
+        //                y++;
+        //                line_e = line_e + 2 * det_x;
+        //                if (line_e >= 0)
+        //                {
+        //                    x++;
+        //                    line_e = line_e - 2 * det_y;
+        //                }
 
-                    }
-                }
-            }
-        }
+        //            }
+        //        }
+        //    }
+        //}
 
         private void Round_MiddlePoint()
         {
@@ -1031,6 +1162,12 @@ namespace CG_Program
             }
             tmp++;
         }
+            if (!IsBorder(BordRight, RightNow_y) && BordRight > x_min && BordRight < x_max)
+            {
+                tmp_x = BordRight;
+                tmp_y = RightNow_y;
+                Push(tmp_x, tmp_y);
+            }
             if (tmp_x == 0 && tmp_y == 0)
             {
                 tmp = BordLeft;
@@ -1081,7 +1218,13 @@ namespace CG_Program
                 }
                 tmp++;
             }
-            if(tmp_x==0&&tmp_y==0)
+            if (!IsBorder(BordRight, RightNow_y) && BordRight > x_min && BordRight < x_max)
+            {
+                tmp_x = BordRight;
+                tmp_y = RightNow_y;
+                Push(tmp_x, tmp_y);
+            }
+            if (tmp_x==0&&tmp_y==0)
             {
                 tmp_x = 0;
                 tmp_y = 0;
@@ -1176,5 +1319,152 @@ namespace CG_Program
             graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
         }
 
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            graphics_Line2.Clear(Color.White);
+            GroupBox2_Paint(null, null);
+            Sign = 0;
+            try
+            {
+                BoxLB_x = Convert.ToInt32(textBox_LBX.Text);
+                BoxLB_y = Convert.ToInt32(textBox_LBY.Text);
+                BoxRT_x = Convert.ToInt32(textBox_RTX.Text);
+                BoxRT_y = Convert.ToInt32(textBox_RTY.Text);
+            }
+            catch (Exception ec)
+            {
+                MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (BoxLB_x > 30 || BoxLB_y > 30 || BoxRT_x > 30 || BoxRT_y > 30)
+            {
+                MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+            try
+            {
+                S_x = Convert.ToInt32(IN__S_X.Text);
+                S_y = Convert.ToInt32(IN_S_Y.Text);
+                E_x = Convert.ToInt32(IN_E_X.Text);
+                E_y = Convert.ToInt32(IN_E_Y.Text);
+            }
+            catch (Exception ec)
+            {
+                MessageBox.Show("输入了非数字！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (S_x > 30 || E_x > 30 || S_y > 30 || E_y > 30)
+            {
+                MessageBox.Show("超出范围！", "警告！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            for (int i = BoxLB_y; i <= BoxRT_y; i++)
+                BoxDraw(BoxLB_x, i);
+            for (int i = BoxLB_y; i <= BoxRT_y; i++)
+                BoxDraw(BoxRT_x, i);
+            for (int i = BoxLB_x; i <= BoxRT_x; i++)
+                BoxDraw(i, BoxLB_y);
+            for (int i = BoxLB_x; i <= BoxRT_x; i++)
+                BoxDraw(i,BoxRT_y);
+
+            DDA();
+
+            Cut();
+
+        }
+        private void BoxDraw(int x, int y)
+        {
+            Graphics graphics_Line2 = this.groupBox2.CreateGraphics();
+            Pen PointPen = new Pen(Color.Yellow, 1);
+            Brush b = new SolidBrush(Color.Yellow);//声明的画刷
+            graphics_Line2.DrawEllipse(PointPen, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+            graphics_Line2.FillEllipse(b, x * 10 - 3, (32 - y) * 10 - 3, 5, 5);
+        }
+        private void Cut()
+        {
+            int code1, code2,code;
+            float tmp;
+            float x, y;
+            float k, adk;
+            x = 0;
+            y = 0;
+            k = (float)(E_y - S_y) / (E_x - S_x);
+            adk = (float)(E_x - S_x) / (E_y - S_y);
+            if (E_x <= S_x)
+            {
+                tmp = E_x;
+                E_x = S_x;
+                S_x = tmp;
+
+                tmp = E_y;
+                E_y = S_y;
+                S_y = tmp;
+            }
+            code1 = GetCode(S_x,S_y);
+            code2 = GetCode(E_x, E_y);
+            while(code1!=0||code2!=0)
+            {
+                if ((code1 & code2) != 0)
+                    return;
+                if (code1 != 0)
+                    code = code1;
+                else
+                    code = code2;
+                if((LEFT&code)!=0)
+                {
+                    x = BoxLB_x;
+                    y = S_y + (k * (float)(BoxLB_x - S_x));
+
+                }
+                else if((RIGHT&code)!=0)
+                {
+                    x = BoxRT_x;
+                    y = S_y + (k * (float)(BoxRT_x - S_x));
+
+                }
+                else if((BOTTOM&code)!=0)
+                {
+                    y = BoxLB_y;
+                    x = S_x + (adk* (float)(BoxLB_y - S_y));
+                    MessageBox.Show("" + ((float)(E_x - S_x) / (E_y - S_y)) * (float)(BoxLB_y - S_y));
+                }
+                else if((TOP&code)!=0)
+                {
+                    y = BoxRT_y;
+                    x = S_x + (adk * (float)(BoxRT_y - S_y));
+                    MessageBox.Show("" + ((float)(E_x - S_x) / (E_y - S_y)) +"  "+ (float)(BoxRT_y - S_y));
+                }
+                if(code==code1)
+                {
+                    S_x = x;
+                    S_y = y;
+                    code1 = GetCode(x, y);
+                }
+                else
+                {
+                    E_x = x;
+                    E_y = y;
+                    code2 = GetCode(x,y);
+                }
+            }
+            ColorDDA();
+        }
+
+        private int GetCode(float x,float y)
+        {
+            int code=0;
+            if ((int)(x+0.5) < BoxLB_x) code |= LEFT;
+            if ((int)(x + 0.5) > BoxRT_x) code |= RIGHT;
+            if ((int)(y + 0.5) < BoxLB_y) code |= BOTTOM;
+            if ((int)(y + 0.5) > BoxRT_y) code |= TOP;
+            return code;
+        }
+
+        private void TextBox_RTX_TextChanged(object sender, EventArgs e)
+        {
+            //
+        }
     }
 }
